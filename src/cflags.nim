@@ -3,7 +3,7 @@
 import std/setutils
 from typetraits import HoleyEnum
 
-iterator holeyItems*[T: HoleyEnum](a: set[T]): T {.inline.} =
+iterator holeyItems*[T: enum](a: set[T]): T {.inline.} =
   ## Iterates over each element of `a`. `holeyItems` iterates only over the
   ## elements that are really in the set (and not over the ones the set is
   ## able to hold).
