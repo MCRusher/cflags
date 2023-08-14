@@ -165,7 +165,7 @@ A C-compatible bitmask-set interface</p>
 <p>this exists because nim sets aren't compatible with C bitmasks</p>
 <p><tt class="docutils literal"><span class="pre"><span class="Identifier">T</span><span class="Punctuation">:</span> <span class="Identifier">SomeInteger</span></span></tt> is the backing type for the flags type and determines the base type and size</p>
 <p><tt class="docutils literal"><span class="pre"><span class="Identifier">E</span><span class="Punctuation">:</span> <span class="Keyword">enum</span></span></tt> is the enum type containing the range of values that the set is meant to represent, be careful not to accidentally overlap the bits in the values</p>
-<p>Overlapping enum values in bitfields is sometimes done on purpose, but note that when stringized, only the basic values will be shown, not overlapping values</p>
+<p>Overlapping enum values in bitfields is sometimes done on purpose but note that when stringized only the basic values will be shown, not overlapping values</p>
 
     
   </dd>
@@ -181,7 +181,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CFlags%5BT%2CE%5D"><span class="Identifier">`$`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span class="Identifier">noSideEffect</span>.}</pre></dt>
   <dd>
     
-    stringize a flags type in a format similar to a set    
+    <p>stringize a <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> in a format similar to a set</p>
+<p>cannot be called at compiletime</p>
+
     
   </dd>
 </div>
@@ -241,7 +243,7 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CFlags%5BT%2CE%5D%2CopenArray%5BE%5D"><span class="Identifier">`==`</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">arrflags</span><span class="Other">:</span> <span class="Identifier">openArray</span><span class="Other">[</span><span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">noSideEffect</span>.}</pre></dt>
   <dd>
     
-    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">setflags</span></span></tt> is an identity of <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt></p>
+    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">arrflags</span></span></tt> is an identity of <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt></p>
 <p>can be called at compiletime</p>
 
     
@@ -288,7 +290,7 @@ A C-compatible bitmask-set interface</p>
     <span class="Identifier">noSideEffect</span>.}</pre></dt>
   <dd>
     
-    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">setflags</span></span></tt> is a subset or identity of <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt></p>
+    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">arrflags</span></span></tt> is a subset or identity of <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt></p>
 <p>can be called at compiletime</p>
 
     
@@ -298,7 +300,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">proc</span> <a href="#contains%2CFlags%5BT%2CE%5D%2CE"><span class="Identifier">contains</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">flag</span><span class="Other">:</span> <span class="Identifier">E</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span class="Identifier">noSideEffect</span>.}</pre></dt>
   <dd>
     
-    check if flag is contained in flags
+    <p>check if flag is contained in flags</p>
+<p>can be called at compiletime</p>
+
     
   </dd>
 </div>
@@ -321,7 +325,7 @@ A C-compatible bitmask-set interface</p>
     
     <p>make a <a class="reference internal nimdoc" title="type Flags" href="#Flags">Flags</a> type from variadic arguments
  <tt class="docutils literal"><span class="pre"><span class="Identifier">BackingType</span></span></tt> is used to streamline generic type substitution</p>
-<p>can be called at comptime, use this or <a class="reference internal nimdoc" title="proc toFlags[T, E](arrflags: openArray[E]; BackingType: typedesc[T]): Flags[T, E]" href="#toFlags,openArray[E],typedesc[T]">toFlags*[T, E](arrflags: openArray[E], BackingType: typedesc[T])</a> if you need a flag compiletime constant</p>
+<p>can be called at comptime, use this or <a class="reference internal nimdoc" title="proc toFlags[T, E](arrflags: openArray[E]; BackingType: typedesc[T]): Flags[T, E]" href="#toFlags,openArray[E],typedesc[T]">toFlags[T, E](arrflags, BackingType)</a> if you need a flag compiletime constant</p>
 
     
   </dd>
@@ -333,7 +337,7 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#set%2CFlags%5BT%2CE%5D%2CE"><span class="Identifier">set</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">flag</span><span class="Other">:</span> <span class="Identifier">E</span><span class="Other">)</span></pre></dt>
   <dd>
     
-    set a flag value in flags
+    set a flag value in <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt>
     
   </dd>
 </div>
@@ -344,7 +348,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#subsetOf%2CFlags%5BT%2CE%5D%2CFlags%5BT%2CE%5D"><span class="Identifier">subsetOf</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">,</span> <span class="Identifier">superflags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
   <dd>
     
-    check if <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> is a subset of <tt class="docutils literal"><span class="pre"><span class="Identifier">superflags</span></span></tt> (but not an identity of)
+    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> is a subset of <tt class="docutils literal"><span class="pre"><span class="Identifier">superflags</span></span></tt> (but not an identity of)</p>
+<p>can be called at compiletime</p>
+
     
   </dd>
 </div>
@@ -355,7 +361,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#supersetOf%2CFlags%5BT%2CE%5D%2CFlags%5BT%2CE%5D"><span class="Identifier">supersetOf</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">,</span> <span class="Identifier">subflags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span></pre></dt>
   <dd>
     
-    check if <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> is a superset of <tt class="docutils literal"><span class="pre"><span class="Identifier">subflags</span></span></tt> (but not an identity of)
+    <p>check if <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> is a superset of <tt class="docutils literal"><span class="pre"><span class="Identifier">subflags</span></span></tt> (but not an identity of)</p>
+<p>can be called at compiletime</p>
+
     
   </dd>
 </div>
@@ -374,8 +382,8 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#toFlags%2CopenArray%5BE%5D%2Ctypedesc%5BT%5D"><span class="Identifier">toFlags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">arrflags</span><span class="Other">:</span> <span class="Identifier">openArray</span><span class="Other">[</span><span class="Identifier">E</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">BackingType</span><span class="Other">:</span> <span class="Identifier">typedesc</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span></pre></dt>
   <dd>
     
-    <p>convert a nim set into a flags value</p>
-<p>BackingType is used to streamline generic type substitution</p>
+    <p>convert an open array into a flags value</p>
+<p><tt class="docutils literal"><span class="pre"><span class="Identifier">BackingType</span></span></tt> is used to streamline generic type substitution</p>
 <p>can be called at comptime, use this or <a class="reference internal nimdoc" title="proc makeFlags[T, E](BackingType: typedesc[T]; varflags: varargs[E]): Flags[T, E]" href="#makeFlags,typedesc[T],varargs[E]">makeFlags</a> if you need a flag compiletime constant</p>
 
     
@@ -394,7 +402,7 @@ A C-compatible bitmask-set interface</p>
   <dd>
     
     <p>convert a nim set into a flags value</p>
-<p>BackingType is used to streamline generic type substitution</p>
+<p><tt class="docutils literal"><span class="pre"><span class="Identifier">BackingType</span></span></tt> is used to streamline generic type substitution</p>
 <p>cannot be called at compiletime due to <tt class="docutils literal"><span class="pre"><span class="Identifier">tyIntX</span> <span class="Identifier">to</span> <span class="Identifier">tyEnum</span> <span class="Keyword">cast</span></span></tt>in the holeyItems iterator</p>
 
     
@@ -407,7 +415,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#toSet%2CFlags%5BT%2CE%5D"><span class="Identifier">toSet</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">E</span><span class="Other">]</span></pre></dt>
   <dd>
     
-    
+    <p>convert <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt> to a nim set</p>
+<p>cannot be called at compiletime</p>
+
     
   </dd>
 </div>
@@ -418,7 +428,7 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">func</span> <a href="#unset%2CFlags%5BT%2CE%5D%2CE"><span class="Identifier">unset</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <span class="Keyword">var</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">;</span> <span class="Identifier">flag</span><span class="Other">:</span> <span class="Identifier">E</span><span class="Other">)</span></pre></dt>
   <dd>
     
-    unset a flag value in flags
+    unset a flag value in <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt>
     
   </dd>
 </div>
@@ -435,9 +445,9 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">iterator</span> <a href="#holeyItems.i%2Cset%5BT%5D"><span class="Identifier">holeyItems</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">:</span> <span class="Identifier">HoleyEnum</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <span class="Identifier">set</span><span class="Other">[</span><span class="Identifier">T</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">T</span> {.<span class="Identifier">inline</span>.}</pre></dt>
   <dd>
     
-    <p>Iterates over each element of <tt class="docutils literal"><span class="pre"><span class="Identifier">a</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">items</span></span></tt> iterates only over the elements that are really in the set (and not over the ones the set is able to hold).</p>
-<p>uses a cast expression instead of a normal cast to allow handling enums with holes without <tt class="docutils literal"><span class="pre"><span class="Identifier">HoleyEnumConv</span></span></tt> warnings</p>
-<p>cannot be called at compiletime because the VM doesn't support tyIntX to tyEnum casts</p>
+    <p>Iterates over each element of <tt class="docutils literal"><span class="pre"><span class="Identifier">a</span></span></tt>. <tt class="docutils literal"><span class="pre"><span class="Identifier">holeyItems</span></span></tt> iterates only over the elements that are really in the set (and not over the ones the set is able to hold).</p>
+<p>uses a cast expression instead of a normal cast to allow handling enums with holes without <tt class="docutils literal"><span class="pre"><span class="Identifier">HoleEnumConv</span></span></tt> warnings</p>
+<p>cannot be called at compiletime because the VM doesn't support <tt class="docutils literal"><span class="pre"><span class="Identifier">tyIntX</span> <span class="Identifier">to</span> <span class="Identifier">tyEnum</span></span></tt> casts</p>
 
     
   </dd>
@@ -449,7 +459,7 @@ A C-compatible bitmask-set interface</p>
   <dt><pre><span class="Keyword">iterator</span> <a href="#items.i%2CFlags%5BT%2CE%5D"><span class="Identifier">items</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">(</span><span class="Identifier">flags</span><span class="Other">:</span> <a href="cflags.html#Flags"><span class="Identifier">Flags</span></a><span class="Other">[</span><span class="Identifier">T</span><span class="Other">,</span> <span class="Identifier">E</span><span class="Other">]</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">E</span> {.<span class="Identifier">inline</span>.}</pre></dt>
   <dd>
     
-    <p>iterator over flags contained in flags</p>
+    <p>iterator over flags contained in <tt class="docutils literal"><span class="pre"><span class="Identifier">flags</span></span></tt></p>
 <p>not callable at compiletime</p>
 
     
@@ -467,7 +477,7 @@ A C-compatible bitmask-set interface</p>
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2023-08-14 07:35:18 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2023-08-14 08:29:19 UTC</small>
       </div>
     </div>
   </div>

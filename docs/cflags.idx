@@ -10,20 +10,20 @@ nim	set	cflags.html#set,Flags[T,E],E	proc set[T, E](flags: var Flags[T, E]; flag
 nim	unset	cflags.html#unset,Flags[T,E],E	proc unset[T, E](flags: var Flags[T, E]; flag: E)		79
 nim	items	cflags.html#items.i,Flags[T,E]	iterator items[T, E](flags: Flags[T, E]): E		83
 nim	toSet	cflags.html#toSet,Flags[T,E]	proc toSet[T, E](flags: Flags[T, E]): set[E]		94
-nim	`$`	cflags.html#$,Flags[T,E]	proc `$`[T, E](flags: Flags[T, E]): string		102
-nim	contains	cflags.html#contains,Flags[T,E],E	proc contains[T, E](flags: Flags[T, E]; flag: E): bool		117
-nim	contains	cflags.html#contains,Flags[T,E],set[E]	proc contains[T, E](flags: Flags[T, E]; setflags: set[E]): bool		121
-nim	contains	cflags.html#contains,Flags[T,E],openArray[E]	proc contains[T, E](flags: Flags[T, E]; arrflags: openArray[E]): bool		129
-nim	contains	cflags.html#contains,Flags[T,E],Flags[T,E]	proc contains[T, E](flags, subflags: Flags[T, E]): bool		137
-nim	subsetOf	cflags.html#subsetOf,Flags[T,E],Flags[T,E]	proc subsetOf[T, E](flags, superflags: Flags[T, E]): bool		143
-nim	supersetOf	cflags.html#supersetOf,Flags[T,E],Flags[T,E]	proc supersetOf[T, E](flags, subflags: Flags[T, E]): bool		147
-nim	`==`	cflags.html#==,Flags[T,E],set[E]	proc `==`[T, E](flags: Flags[T, E]; setflags: set[E]): bool		151
-nim	`==`	cflags.html#==,Flags[T,E],openArray[E]	proc `==`[T, E](flags: Flags[T, E]; arrflags: openArray[E]): bool		157
-nim	`==`	cflags.html#==,Flags[T,E],Flags[T,E]	proc `==`[T, E](flags1, flags2: Flags[T, E]): bool		163
-nim	`+`	cflags.html#+,Flags[T,E],Flags[T,E]	proc `+`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		169
-nim	`*`	cflags.html#*,Flags[T,E],Flags[T,E]	proc `*`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		175
-nim	`-`	cflags.html#-,Flags[T,E],Flags[T,E]	proc `-`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		181
-nim	card	cflags.html#card,Flags[T,E]	proc card[T, E](flags: Flags[T, E]): int		187
-nimgrp	contains	cflags.html#contains-procs-all	proc		117
+nim	`$`	cflags.html#$,Flags[T,E]	proc `$`[T, E](flags: Flags[T, E]): string		105
+nim	contains	cflags.html#contains,Flags[T,E],E	proc contains[T, E](flags: Flags[T, E]; flag: E): bool		122
+nim	contains	cflags.html#contains,Flags[T,E],set[E]	proc contains[T, E](flags: Flags[T, E]; setflags: set[E]): bool		128
+nim	contains	cflags.html#contains,Flags[T,E],openArray[E]	proc contains[T, E](flags: Flags[T, E]; arrflags: openArray[E]): bool		136
+nim	contains	cflags.html#contains,Flags[T,E],Flags[T,E]	proc contains[T, E](flags, subflags: Flags[T, E]): bool		144
+nim	subsetOf	cflags.html#subsetOf,Flags[T,E],Flags[T,E]	proc subsetOf[T, E](flags, superflags: Flags[T, E]): bool		150
+nim	supersetOf	cflags.html#supersetOf,Flags[T,E],Flags[T,E]	proc supersetOf[T, E](flags, subflags: Flags[T, E]): bool		156
+nim	`==`	cflags.html#==,Flags[T,E],set[E]	proc `==`[T, E](flags: Flags[T, E]; setflags: set[E]): bool		162
+nim	`==`	cflags.html#==,Flags[T,E],openArray[E]	proc `==`[T, E](flags: Flags[T, E]; arrflags: openArray[E]): bool		168
+nim	`==`	cflags.html#==,Flags[T,E],Flags[T,E]	proc `==`[T, E](flags1, flags2: Flags[T, E]): bool		174
+nim	`+`	cflags.html#+,Flags[T,E],Flags[T,E]	proc `+`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		180
+nim	`*`	cflags.html#*,Flags[T,E],Flags[T,E]	proc `*`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		186
+nim	`-`	cflags.html#-,Flags[T,E],Flags[T,E]	proc `-`[T, E](flags1, flags2: Flags[T, E]): Flags[T, E]		192
+nim	card	cflags.html#card,Flags[T,E]	proc card[T, E](flags: Flags[T, E]): int		198
+nimgrp	contains	cflags.html#contains-procs-all	proc		122
 nimgrp	toflags	cflags.html#toFlags-procs-all	proc		45
-nimgrp	==	cflags.html#==-procs-all	proc		151
+nimgrp	==	cflags.html#==-procs-all	proc		162

@@ -4,13 +4,13 @@ import std/setutils
 from typetraits import HoleyEnum
 
 iterator holeyItems*[T: HoleyEnum](a: set[T]): T {.inline.} =
-  ## Iterates over each element of `a`. `items` iterates only over the
+  ## Iterates over each element of `a`. `holeyItems` iterates only over the
   ## elements that are really in the set (and not over the ones the set is
   ## able to hold).
   ##
-  ## uses a cast expression instead of a normal cast to allow handling enums with holes without `HoleyEnumConv` warnings
+  ## uses a cast expression instead of a normal cast to allow handling enums with holes without `HoleEnumConv` warnings
   ##
-  ## cannot be called at compiletime because the VM doesn't support tyIntX to tyEnum casts
+  ## cannot be called at compiletime because the VM doesn't support `tyIntX to tyEnum` casts
   var i = low(T).int
   while i <= high(T).int:
     if cast[T](i) in a: yield cast[T](i)
@@ -26,15 +26,15 @@ type Flags*[T: SomeInteger, E: enum] = distinct T ## \
 ## `E: enum` is the enum type containing the range of values that the set is meant to represent,
 ## be careful not to accidentally overlap the bits in the values
 ##
-## Overlapping enum values in bitfields is sometimes done on purpose, 
-## but note that when stringized, only the basic values will be shown, not overlapping values
+## Overlapping enum values in bitfields is sometimes done on purpose
+## but note that when stringized only the basic values will be shown, not overlapping values
 
 func makeFlags*[T, E](BackingType: typedesc[T], varflags: varargs[E]): Flags[T, E] =
     ## make a `Flags`_ type from variadic arguments\
     ## 
     ## `BackingType` is used to streamline generic type substitution
     ##
-    ## can be called at comptime, use this or `toFlags*[T, E](arrflags: openArray[E], BackingType: typedesc[T])`_ if you need a flag compiletime constant
+    ## can be called at comptime, use this or `toFlags[T, E](arrflags, BackingType)`_ if you need a flag compiletime constant
     var raw_flags: T
 
     for flag in varflags:
@@ -45,7 +45,7 @@ func makeFlags*[T, E](BackingType: typedesc[T], varflags: varargs[E]): Flags[T, 
 func toFlags*[T, E](setflags: set[E], BackingType: typedesc[T]): Flags[T, E] =
     ## convert a nim set into a flags value
     ##
-    ## BackingType is used to streamline generic type substitution
+    ## `BackingType` is used to streamline generic type substitution
     ##
     ## cannot be called at compiletime due to `tyIntX to tyEnum cast`in the holeyItems iterator
     var raw_flags: T
@@ -58,9 +58,9 @@ func toFlags*[T, E](setflags: set[E], BackingType: typedesc[T]): Flags[T, E] =
 func toFlags*[T, E](setflags: set[E]): Flags[T, E] = toFlags[T, E](setflags, T)
 
 func toFlags*[T, E](arrflags: openArray[E], BackingType: typedesc[T]): Flags[T, E] =
-    ## convert a nim set into a flags value
+    ## convert an open array into a flags value
     ##
-    ## BackingType is used to streamline generic type substitution
+    ## `BackingType` is used to streamline generic type substitution
     ##
     ## can be called at comptime, use this or `makeFlags`_ if you need a flag compiletime constant
     var raw_flags: T
@@ -73,15 +73,15 @@ func toFlags*[T, E](arrflags: openArray[E], BackingType: typedesc[T]): Flags[T, 
 func toFlags*[T, E](arrflags: openArray[E]): Flags[T, E] = toFlags[T, E](arrflags, T)
 
 func set*[T, E](flags: var Flags[T, E], flag: E) =
-    ## set a flag value in flags
+    ## set a flag value in `flags`
     flags = Flags[T, E](cast[T](flags) or cast[T](flag))
 
 func unset*[T, E](flags: var Flags[T, E], flag: E) =
-    ## unset a flag value in flags
+    ## unset a flag value in `flags`
     flags = Flags[T, E](cast[T](flags) and (not cast[T](flag)))
 
 iterator items*[T, E](flags: Flags[T, E]): E {.inline.} =
-    ## iterator over flags contained in flags
+    ## iterator over flags contained in `flags`
     ##
     ## not callable at compiletime
     var flags = flags
@@ -92,6 +92,9 @@ iterator items*[T, E](flags: Flags[T, E]): E {.inline.} =
             yield flag
 
 func toSet*[T, E](flags: Flags[T, E]): set[E] =
+    ## convert `flags` to a nim set
+    ##
+    ## cannot be called at compiletime
     var flags = flags
 
     for flag in fullset(E).holeyItems():
@@ -100,7 +103,9 @@ func toSet*[T, E](flags: Flags[T, E]): set[E] =
             result.incl(flag)
 
 proc `$`*[T, E](flags: Flags[T, E]): string {.noSideEffect.} = # must be a proc or is not called implicitly for some reason
-    ## stringize a flags type in a format similar to a set    
+    ## stringize a `flags` in a format similar to a set
+    ##
+    ## cannot be called at compiletime
     result = "{" & $T & " | "
     var flags = flags
 
@@ -116,6 +121,8 @@ proc `$`*[T, E](flags: Flags[T, E]): string {.noSideEffect.} = # must be a proc 
 
 proc contains*[T, E](flags: Flags[T, E], flag: E): bool {.noSideEffect.} =
     ## check if flag is contained in flags
+    ##
+    ## can be called at compiletime
     (T(flags) and T(flag)) == T(flag)
 
 proc contains*[T, E](flags: Flags[T, E], setflags: set[E]): bool {.noSideEffect.} =
@@ -127,7 +134,7 @@ proc contains*[T, E](flags: Flags[T, E], setflags: set[E]): bool {.noSideEffect.
     return  (T(flags) and T(setflags)) == T(setflags)
 
 proc contains*[T, E](flags: Flags[T, E], arrflags: openArray[E]): bool {.noSideEffect.} =
-    ## check if `setflags` is a subset or identity of `flags`
+    ## check if `arrflags` is a subset or identity of `flags`
     ##
     ## can be called at compiletime
     let arrflags = toFlags[T, E](arrflags)
@@ -142,10 +149,14 @@ proc contains*[T, E](flags, subflags: Flags[T, E]): bool {.noSideEffect.} =
 
 func subsetOf*[T, E](flags, superflags: Flags[T, E]): bool =
     ## check if `flags` is a subset of `superflags` (but not an identity of)
+    ##
+    ## can be called at compiletime
     return flags in superflags and flags != superflags
 
 func supersetOf*[T, E](flags, subflags: Flags[T, E]): bool =
     ## check if `flags` is a superset of `subflags` (but not an identity of)
+    ##
+    ## can be called at compiletime
     return subflags in flags and subflags != flags
 
 proc `==`*[T, E](flags: Flags[T, E], setflags: set[E]): bool {.noSideEffect.} =
@@ -155,7 +166,7 @@ proc `==`*[T, E](flags: Flags[T, E], setflags: set[E]): bool {.noSideEffect.} =
     return T(flags) == T(toFlags[T, E](setflags))
 
 proc `==`*[T, E](flags: Flags[T, E], arrflags: openArray[E]): bool {.noSideEffect.} =
-    ## check if `setflags` is an identity of `flags`
+    ## check if `arrflags` is an identity of `flags`
     ##
     ## can be called at compiletime
     return T(flags) == T(toFlags[T, E](arrflags))
