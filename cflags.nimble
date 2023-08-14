@@ -10,3 +10,6 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 2.0.0"
+
+task gendocs, "Generate Documentation":
+    exec("nim doc --index --project -o:docs/ src/cflags.nim && nim buildindex -o:docs/index.html docs")
