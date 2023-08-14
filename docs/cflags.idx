@@ -1,5 +1,5 @@
 nimTitle	cflags	cflags.html	module src/cflags		0
-nim	holeyItems	cflags.html#holeyItems.i,set[T]	iterator holeyItems[T: HoleyEnum](a: set[T]): T		6
+nim	holeyItems	cflags.html#holeyItems.i,set[T]	iterator holeyItems[T: enum](a: set[T]): T		6
 nim	Flags	cflags.html#Flags	type Flags		19
 nim	makeFlags	cflags.html#makeFlags,typedesc[T],varargs[E]	proc makeFlags[T, E](BackingType: typedesc[T]; varflags: varargs[E]): Flags[T, E]		32
 nim	toFlags	cflags.html#toFlags,set[E],typedesc[T]	proc toFlags[T, E](setflags: set[E]; BackingType: typedesc[T]): Flags[T, E]		45
