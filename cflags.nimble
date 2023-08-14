@@ -1,6 +1,6 @@
 # Package
 
-version       = "1.0.0"
+version       = "1.0.1"
 author        = "MCRusher"
 description   = "A C-compatible bitmask flags interface, with a subset of nim set functionality"
 license       = "MIT"
